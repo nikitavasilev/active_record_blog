@@ -1,38 +1,84 @@
-## Exercice du Blog
+# Database with Rails - Active Record - Blog Project
 
-Exercice réalisé dans le cadre de la semaine Rails (THP), par notre belle équipe :
-- [Ysaline Macé](https://github.com/Ysalien)
-- [Nikita Vasilev](https://github.com/nikitavasilev)
-- [Arthur Mansuy](https://github.com/tutus06) 
-- [Thomas Charvet](https://github.com/TomacTh) 
-- [Nathaniel Debache](https://github.com/Natdenice).
+This work was done as a project for [The Hacking Project Bootcamp](https://www.thehackingproject.org/).
+The goal was to learn the basics of the Database with Rails and build an SQL database of a blog app with the main functionalities of a blog database, like posting, liking posts, comments etc.
 
-## Database
+There is the database schema of our app:
+```ruby
+ActiveRecord::Schema.define(version: 2018_10_24_143534) do
 
-Le travail réalisé se focalise ici sur du back end. Notre blog est une base de données, permettant aux utilisateurs d'écrire des articles, de les commenter et de les liker. Cinq models sont créés avec les tables associés.
+  create_table "articles", force: :cascade do |t|
+    t.string "title"
+    t.text "content"
+    t.integer "user_id"
+    t.integer "category_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["category_id"], name: "index_articles_on_category_id"
+    t.index ["user_id"], name: "index_articles_on_user_id"
+  end
 
-- Le model User contient un utilisateur qui a un firstname, un lastname et un email. Il peut écrire plusieurs articles.
-10 users ont été généré en random avec la gem Faker. Ici Faker::Name et Faker::Internet.email
+  create_table "categories", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
-- Le model Article contient un titre et un contenu. Un article appartient à un utilisateur unique, il peut relever d'une seule catégorie, avoir plusieurs commentaires et likes. L'index dans ce model lie les id de l'utilisateur et de la catégorie.
-10 articles ont été généré en random avec Faker. Ici Faker::Cannabis.cannabinoid pour le titre, Faker::Lebowski pour le contenu, et un Faker::Number.between(1, 10) pour les id (comme les index sont liés, il est nécessaire de préciser un id pour l'utilisateur et la catégorie pour la création).
-Oui nos Faker sont très funs.
+  create_table "comments", force: :cascade do |t|
+    t.text "content"
+    t.integer "user_id"
+    t.integer "article_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["article_id"], name: "index_comments_on_article_id"
+    t.index ["user_id"], name: "index_comments_on_user_id"
+  end
 
-- Le model Category contient une catégorie. Elle peut appartenir à plusieurs articles. On la génère de la même manière avec Faker. Ici, Faker::Cannabis.buzzword.
+  create_table "likes", force: :cascade do |t|
+    t.integer "article_id"
+    t.integer "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["article_id"], name: "index_likes_on_article_id"
+    t.index ["user_id"], name: "index_likes_on_user_id"
+  end
 
-- Le model Comment contient un contenu. Il est réalisé par un utilisateur unique et peut être fait pour plusieurs articles.
-L'index va viser l'utilisateur et l'article. Idem généré en random avec Faker. Ici, Faker::HarryPotter.quote pour les commentaires et un Faker::Number.between de la même manière pour le model Article (pour les mêmes raisons).
+  create_table "users", force: :cascade do |t|
+    t.string "first_name"
+    t.string "last_name"
+    t.string "email"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
-- Le model Like est une table particulière car se base sur une relation n-n. Elle joint l'id User avec l'id Article. Afin de réaliser une telle jointure, on utilise la fonction : has_and_belongs_to_many.
-Le nombre de like est généré aléatoirement avec Faker::Number comme précédemment.
+end
+``` 
 
-Le résultat est une belle base de données avec des articles appartenant à différents users, avec commentaires et likes.
-A base de belongs_to :nomdetonmodel, index: true dans les tables. Ainsi que des belongs_to :nomdetonmodel et has_many :nomdetatable. 
+## Requirements
 
-## Les fichiers
+You need at least ruby 2.5.1 (maybe under but not tested) and bundler installed on your computer.
 
-Dans l'arborescence des fichiers, les models se trouvent dans le sous-fichier models, dans le fichier app.
-Les tables se trouvent dans le fichier migrate, qui se trouve lui-même dans le fichier db.
-Pour checker rapidement les tables, le schéma et tout, on peut le faire en ouvrant sqlite3. Pour cela on se place dans le fichier de notre database (db), on sqlite3 development.sqlite3. Voilà.
+1. First of all `git clone the repo`
+2. Run `$ cd active_record_blog`
+3. Run `$ bundle install`
+4. Run `$ rake db:reset` which gonna clean all the cells of our database, and create brand new tables along with our `seeds.rb` file
+5. To play with the database run `$ rails console`
+6. To check the content of each table, run `sqlite3 db/development.sqlite3` and then run:
+..* `.mode column` for better readability
+..* `.headers on` to show headers cells in our tables
+..* `.tables` to see the list of all tables
+..* `SELECT * FROM replace_it_with_the_name_of_a_table;` this command actually shows you the table that you select (don't forget the semicolon at the end!)
+..* `.width` if you want to change the width of the columns for better readability. For example, if you wand to set the width of the first column to 20px and the 2nd column to 50px, run `.width 20 50`
 
-Enjoy!
+## Contributions
+
+This project was build with the help of:
+* [Nikita Vasilev](https://github.com/nikitavasilev)
+* [Arthur Mansuy](https://github.com/tutus06)
+* [Nathaniel Debache](https://github.com/Natdenice)
+* [Thomas Charvet](https://github.com/TomacTh)
+* [Ysaline Macé](https://github.com/Ysalien)
+
+## Contact
+
+Problems or questions? File an issue at [GitHub](https://github.com/nikitavasilev/active_record_blog/issues).
