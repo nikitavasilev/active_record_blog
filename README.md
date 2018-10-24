@@ -13,11 +13,11 @@ You need at least ruby 2.5.1 (maybe under but not tested) and bundler installed 
 4. Run `$ rake db:reset` which gonna clean all the cells of our database, and create brand new tables along with our `seeds.rb` file
 5. To play with the database run `$ rails console`
 6. To check the content of each table, run `sqlite3 db/development.sqlite3` and then run:
-..* `.mode column` for better readability
-..* `.headers on` to show headers cells in our tables
-..* `.tables` to see the list of all tables
-..* `SELECT * FROM replace_it_with_the_name_of_a_table;` this command actually shows you the table that you select (don't forget the semicolon at the end!)
-..* `.width` if you want to change the width of the columns for better readability. For example, if you wand to set the width of the first column to 20px and the 2nd column to 50px, run `.width 20 50`
+	* `.mode column` for better readability
+	* `.headers on` to show headers cells in our tables
+	* `.tables` to see the list of all tables
+	* `SELECT * FROM replace_it_with_the_name_of_a_table;` this command actually shows you the table that you select (don't forget the semicolon at the end!)
+	* `.width` if you want to change the width of the columns for better readability. For example, if you wand to set the width of the first column to 20px and the 2nd column to 50px, run `.width 20 50`
 
 ### This is the database schema of our app:
 
